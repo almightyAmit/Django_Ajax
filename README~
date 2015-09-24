@@ -1,0 +1,97 @@
+The Project is focusing on implementing of ajax in Django.
+admin is added,PostgreSQL DB is linked with Django in this commit.
+Tutorial of the implementation part has been added in "django_ajax_tut.odt" file.
+
+
+Installation of technologies
+
+Requirements:
+webserver Nginx
+Database PostgreSQL
+WSGI app server guncorn
+django
+jquery
+python (obviously)
+
+To Install Postgre in Django Project
+
+After deactivating the virtualenv
+
+Install the dependencies for PostgreSQL to work with Django with this command:
+sudo apt-get install libpq-dev python-dev
+
+
+After you have done with this install PostgreSQL with this command:
+sudo apt-get install postgresql postgresql-contrib
+
+
+PostgreSQL is now install in your system now ready to roll.
+
+
+To install NGINX
+
+NGINX is an incredibly fast and light-weight web server. We will use it to serve up our static files for our Django app. To install it just run this command:
+
+sudo apt-get install nginx
+
+Keep in mind that you still need to start NGINX
+
+To install Gunicorn
+
+Gunicorn is a very powerful Python WSGI HTTP Server. Since it is a Python package we need to first activate our virtualenv to install it. Here is how we do that:
+
+source myenv/bin/activate
+
+then add gunicorn with,
+pip install gunicorn
+
+Configure PostgreSQL
+
+Start PostgreSQL with following command:
+sudo su – postgres
+
+Create database
+createdb abcxyz
+
+Create user
+createuser -P anyusername
+
+To activate PostgreSQL enter:
+psql
+
+Finally grant this user access to your new database with the command:
+GRANT ALL PRIVILAGES ON DATABASE abcxyz To anyusername
+
+Type \q and then press ENTER to quit psql.
+Then logout from PostgreSQL
+
+You now have a PostgreSQL database and a user to access that database with. Now we can install Django and set it up to use our new database.
+
+
+In settings.py enter the following code to register database with django:
+
+In database group enter:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'mydb',                      # Or path to database file if using sqlite3.
+            # The following settings are not used with sqlite3:
+            'USER': 'myuser',
+            'PASSWORD': 'password',
+            'HOST': 'localhost',
+            'PORT': '',           # Set to empty string for default.
+        }
+    }
+After activating the virtualenv:
+Sync the database
+python3 manage.py syncdb
+
+
+There might be error occuring like this , if not skip this:
+“””django.core.exceptions.ImproperlyConfigured: Error loading psycopg2 module: No module named 'psycopg2'”””
+
+There seems to be a problem with your psycopg2 installation – Python does not find it
+Simply write this command,
+aptitude install python3-psycopg2
+Then, sync the database:
+
